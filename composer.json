@@ -1,0 +1,29 @@
+{
+    "name": "codehq-dk/my-dashboard-widget-tester",
+    "description": "Mydashboard widget tester for development of new widgets",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CodeHqDk\\MyDashboard\\WidgetTester\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jesper Østergaard Jensen",
+            "email": "jesper@onlinelife.dk"
+        }
+    ],
+    "require": {
+        "codehq-dk/my-dashboard-interfaces": "^1.0",
+        "nyholm/psr7": "^1.8",
+        "nyholm/psr7-server": "^1.1",
+        "slince/di": "^3.0",
+        "league/route": "^6.0",
+        "laminas/laminas-httphandlerrunner": "^2.10",
+        "logifire/nano-template": "^0.2.0"
+    },
+    "require-dev": {
+        "codehq-dk/my-dashboard-blackboard-widget": "^1.0"
+    }
+}
