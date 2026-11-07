@@ -6,7 +6,6 @@ use CodeHqDk\MyDashboard\Interfaces\WidgetProvider;
 use CodeHqDk\MyDashboard\Interfaces\WidgetTypeViewHelperInterface;
 use CodeHqDk\MyDashboard\WidgetTester\Assets\AssetsImporter;
 use CodeHqDk\MyDashboard\WidgetTester\ShowTestWidget\ShowTestWidgetProvider;
-use CodeHqDk\MyDashboard\WidgetTester\ShowTestWidget\ShowWidgetController;
 use CodeHqDk\MyDashboard\WidgetTester\StartPage\StartPageProvider;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use League\Route\Router;
@@ -18,7 +17,7 @@ use Slince\Di\Container;
 
 class WidgetTester
 {
-    public function __construct(private string $widget_provider_classname)
+    public function __construct(private string $widget_provider_classname, private bool $local_assets = true)
     {
     }
 
@@ -63,8 +62,9 @@ class WidgetTester
         $container->register(WidgetTypeViewHelper::class, null);
         $container->register(WidgetTypeViewHelperInterface::class, WidgetTypeViewHelper::class);
 
-        $assets_importer = new AssetsImporter($widget_provider);
+        $assets_importer = new AssetsImporter($widget_provider, $this->local_assets);
         $assets_importer->import();
+        $container->register(AssetsImporter::class, $assets_importer);
 
         /** @var Router $router */
         $router = $container->get(Router::class);

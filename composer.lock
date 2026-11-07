@@ -957,16 +957,16 @@
     "packages-dev": [
         {
             "name": "codehq-dk/my-dashboard-blackboard-widget",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codehq-dk/my-dashboard-blackboard-widget.git",
-                "reference": "bffc53e214d0e346d58b1dbf7e12bf3d5fffa14a"
+                "reference": "3c1c0ed201f2569325f977e7444995254a7e0329"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codehq-dk/my-dashboard-blackboard-widget/zipball/bffc53e214d0e346d58b1dbf7e12bf3d5fffa14a",
-                "reference": "bffc53e214d0e346d58b1dbf7e12bf3d5fffa14a",
+                "url": "https://api.github.com/repos/codehq-dk/my-dashboard-blackboard-widget/zipball/3c1c0ed201f2569325f977e7444995254a7e0329",
+                "reference": "3c1c0ed201f2569325f977e7444995254a7e0329",
                 "shasum": ""
             },
             "require": {
@@ -991,9 +991,9 @@
             "description": "Blackboard widget to be used in the CodeHq-dk Mydashboard project",
             "support": {
                 "issues": "https://github.com/codehq-dk/my-dashboard-blackboard-widget/issues",
-                "source": "https://github.com/codehq-dk/my-dashboard-blackboard-widget/tree/1.0.0"
+                "source": "https://github.com/codehq-dk/my-dashboard-blackboard-widget/tree/1.0.2"
             },
-            "time": "2026-11-05T18:34:45+00:00"
+            "time": "2026-11-07T17:43:10+00:00"
         }
     ],
     "aliases": [],
