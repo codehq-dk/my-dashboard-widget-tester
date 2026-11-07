@@ -105,7 +105,7 @@ class AssetsImporter
 
     private function getSourceAssetsPath(string $package_path): string
     {
-        $source_assets_path = realpath($package_path . '/public/assets');
+        $source_assets_path = realpath($package_path . '/public/assets/widgets/' . $this->getWidgetTypeId());
         if ($source_assets_path === false) {
             throw new \RuntimeException(sprintf('Widget public assets directory not found: %s/public/assets', $package_path));
         }
