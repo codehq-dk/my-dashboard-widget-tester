@@ -5,7 +5,6 @@ namespace CodeHqDk\MyDashboard\WidgetTester\ShowTestWidget;
 use CodeHqDk\MyDashboard\Interfaces\WidgetProvider;
 use CodeHqDk\MyDashboard\Interfaces\WidgetTypeViewHelperInterface;
 use CodeHqDk\MyDashboard\WidgetTester\Assets\AssetsImporter;
-use CodeHqDk\MyDashboard\WidgetTester\StartPage\StartPageView;
 use CodeHqDk\MyDashboard\WidgetTester\WidgetTypeSuperRegistry;
 use Exception;
 use NanoTemplate\Renderer;
@@ -20,23 +19,14 @@ class ShowWidgetController
 
     public function __construct(
         private readonly Psr17Factory               $psr_17_factory,
-        private readonly StartPageView              $view,
-        private readonly WidgetProvider             $widget_provider,
         private readonly WidgetTypeSuperRegistry    $widget_type_super_registry,
         private readonly WidgetTypeViewHelperInterface $widget_type_view_helper,
         private readonly AssetsImporter $assets_importer
-//        private readonly ProjectPaths               $project_paths,
-//        private readonly Document                   $dom,
-//        private readonly AssetHandler               $assets,
-//        private readonly CommonControllerResponses  $common_controller_responses
     ) {
     }
 
     public function buildResponse(ServerRequestInterface $request): ResponseInterface
     {
-//        $this->dom->addCss($this->assets->getUrl('start-page.css'));
-//        $this->dom->addJs($this->assets->getUrl('start-page.js'));
-        $widget_view = $this->widget_provider->returnWidgetView();
         $widget_view = $this->widget_type_super_registry->getWidgetTypeView();
         $widget_view->setHelper($this->widget_type_view_helper);
 

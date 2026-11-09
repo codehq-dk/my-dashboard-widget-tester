@@ -1,0 +1,59 @@
+<?php
+
+namespace CodeHqDk\MyDashboard\WidgetTester;
+
+use CodeHqDk\MyDashboard\Interfaces\WidgetProvider;
+use CodeHqDk\MyDashboard\Interfaces\WidgetTypeFormHelperInterface;
+use CodeHqDk\MyDashboard\Interfaces\WidgetTypeSettings;
+use CodeHqDk\MyDashboard\WidgetTester\SaveSettings\SaveSettingsProvider;
+
+class WidgetTypeFormHelper implements WidgetTypeFormHelperInterface
+{
+    public function __construct(private WidgetProvider $widgetProvider)
+    {
+    }
+
+    public function insertCommonHiddenFormElements(): string
+    {
+        return '';
+    }
+
+    public function insertCommonSettingsFormElements(): string
+    {
+        // TODO: Implement insertCommonSettingsFormElements() method.
+        return '';
+    }
+
+    public function insertPredefinedSettingsDropdown(): string
+    {
+        // TODO: Implement insertPredefinedSettingsDropdown() method.
+        return '';
+    }
+
+    public function getSetupPageHead(): string
+    {
+        // TODO: Implement getSetupPageHead() method.
+        return '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.conditional.slate.min.css" />';
+    }
+
+    public function getDesignHeader(): string
+    {
+        // TODO: Implement getDesignHeader() method.
+        return '';
+    }
+
+    public function getTypeSpecificSettings(): ?WidgetTypeSettings
+    {
+        $settings_class = $this->widgetProvider->returnWidgetSettings();
+
+        $content = file_get_contents(dirname(__DIR__) . '/runtime/widget_settings.json');
+        $widget_type_specific_settings = json_decode($content, true);
+
+        return $settings_class::fromArray($widget_type_specific_settings);
+    }
+
+    public function getWidgetFormPostUrl(): string
+    {
+        return SaveSettingsProvider::SAVE_WIDGET_SETTINGS_URL;
+    }
+}
