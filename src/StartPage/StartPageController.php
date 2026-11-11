@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CodeHqDk\MyDashboard\WidgetTester\StartPage;
 
+use CodeHqDk\MyDashboard\WidgetTester\WidgetTypeSuperRegistry;
 use NanoTemplate\Renderer;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
@@ -14,6 +15,7 @@ class StartPageController
     public function __construct(
         private readonly Psr17Factory               $psr_17_factory,
         private readonly StartPageView              $view,
+        private readonly WidgetTypeSuperRegistry    $widget_type_super_registry,
 //        private readonly ProjectPaths               $project_paths,
 //        private readonly Document                   $dom,
 //        private readonly AssetHandler               $assets,
@@ -25,6 +27,7 @@ class StartPageController
     {
 //        $this->dom->addCss($this->assets->getUrl('start-page.css'));
 //        $this->dom->addJs($this->assets->getUrl('start-page.js'));
+        $this->view->setWidgetType($this->widget_type_super_registry->getWidgetType());
 
         return $this->build20OkResponse(__NAMESPACE__, __DIR__, $this->view);
     }

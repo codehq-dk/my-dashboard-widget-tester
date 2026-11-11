@@ -3,6 +3,7 @@
 namespace CodeHqDk\MyDashboard\WidgetTester;
 
 use CodeHqDk\MyDashboard\Interfaces\WidgetProvider;
+use CodeHqDk\MyDashboard\Interfaces\WidgetType;
 use CodeHqDk\MyDashboard\Interfaces\WidgetTypeFormView;
 use CodeHqDk\MyDashboard\Interfaces\WidgetTypeView;
 use Psr\Container\ContainerInterface;
@@ -19,7 +20,7 @@ readonly class WidgetTypeSuperRegistry
         return $this->container->get($widget_type_view_classname);
     }
 
-    public function getWidgetType(): string
+    public function getWidgetTypeId(): string
     {
         $widget_type_classname = $this->widgetProvider->returnWidgetType();
         return $widget_type_classname::getTypeId();
@@ -35,5 +36,11 @@ readonly class WidgetTypeSuperRegistry
     {
         $widget_type_settings_classname = $this->widgetProvider->returnWidgetSettings();
         return $this->container->get($widget_type_settings_classname);
+    }
+
+    public function getWidgetType(): WidgetType
+    {
+        $widget_type_classname = $this->widgetProvider->returnWidgetType();
+        return $this->container->get($widget_type_classname);
     }
 }

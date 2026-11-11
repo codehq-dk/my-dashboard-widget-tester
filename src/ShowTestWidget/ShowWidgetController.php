@@ -73,7 +73,7 @@ class ShowWidgetController
 
     private function getBasicHtml5Page(): string
     {
-        $widget_type_text = $this->widget_type_super_registry->getWidgetType();
+        $widget_type_text = $this->widget_type_super_registry->getWidgetTypeId();
 
         $css_file = '/assets/widgets/' . $widget_type_text . '/' . $this->assets_importer->getCssName();
         $js_file = '/assets/widgets/' . $widget_type_text . '/' . $this->assets_importer->getJsName();

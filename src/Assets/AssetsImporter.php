@@ -45,7 +45,8 @@ class AssetsImporter
         [$css_name, $js_name] = $this->getCssAndJsNames($manifest);
 
         $this->copyManifestAssets($manifest, $source_assets_path, $destination_path);
-        $this->copyImages($source_assets_path, $destination_path);
+        $this->copyAssetDirectory($source_assets_path, $destination_path, 'images', 'image');
+        $this->copyAssetDirectory($source_assets_path, $destination_path, 'icon', 'icon');
 
         $this->css_name = $css_name;
         $this->js_name = $js_name;
@@ -171,21 +172,36 @@ class AssetsImporter
         }
     }
 
-    private function copyImages(string $source_assets_path, string $destination_path): void
+    private function copyAssetDirectory(
+        string $source_assets_path,
+        string $destination_path,
+        string $directory_name,
+        string $asset_name
+    ): void
     {
-        $source_images_path = $source_assets_path . '/images';
-        if (is_dir($source_images_path)) {
-            $resolved_images_path = realpath($source_images_path);
-            if ($resolved_images_path === false
-                || !str_starts_with($resolved_images_path, $source_assets_path . DIRECTORY_SEPARATOR)) {
-                throw new \RuntimeException('Widget images directory must be inside public/assets.');
+        $source_directory_path = $source_assets_path . '/' . $directory_name;
+        if (is_dir($source_directory_path)) {
+            $resolved_directory_path = realpath($source_directory_path);
+            if ($resolved_directory_path === false
+                || !str_starts_with($resolved_directory_path, $source_assets_path . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException(sprintf('Widget %s directory must be inside public/assets.', $directory_name));
             }
 
-            $this->copyImageFiles($resolved_images_path, $destination_path . '/images');
+            $this->copyAssetFiles(
+                $resolved_directory_path,
+                $destination_path . '/' . $directory_name,
+                $directory_name,
+                $asset_name
+            );
         }
     }
 
-    private function copyImageFiles(string $source_path, string $destination_path): void
+    private function copyAssetFiles(
+        string $source_path,
+        string $destination_path,
+        string $directory_name,
+        string $asset_name
+    ): void
     {
         if (!is_dir($destination_path) && !mkdir($destination_path, 0777, true) && !is_dir($destination_path)) {
             throw new \RuntimeException(sprintf('Unable to create widget asset directory: %s', $destination_path));
@@ -193,7 +209,7 @@ class AssetsImporter
 
         $entries = scandir($source_path);
         if ($entries === false) {
-            throw new \RuntimeException(sprintf('Unable to read widget images directory: %s', $source_path));
+            throw new \RuntimeException(sprintf('Unable to read widget %s directory: %s', $directory_name, $source_path));
         }
 
         foreach ($entries as $entry) {
@@ -203,7 +219,7 @@ class AssetsImporter
 
             $source_entry = $source_path . '/' . $entry;
             if (is_link($source_entry)) {
-                throw new \RuntimeException(sprintf('Widget images directory contains a symbolic link: %s', $source_entry));
+                throw new \RuntimeException(sprintf('Widget %s directory contains a symbolic link: %s', $directory_name, $source_entry));
             }
 
             if (is_dir($source_entry)) {
@@ -212,10 +228,10 @@ class AssetsImporter
 
             if (is_file($source_entry)) {
                 if (!copy($source_entry, $destination_path . '/' . $entry)) {
-                    throw new \RuntimeException(sprintf('Unable to copy widget image: %s', $source_entry));
+                    throw new \RuntimeException(sprintf('Unable to copy widget %s: %s', $asset_name, $source_entry));
                 }
             } else {
-                throw new \RuntimeException(sprintf('Unsupported entry in widget images directory: %s', $source_entry));
+                throw new \RuntimeException(sprintf('Unsupported entry in widget %s directory: %s', $directory_name, $source_entry));
             }
         }
     }
