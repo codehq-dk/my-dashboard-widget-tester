@@ -44,6 +44,14 @@ class AssetsImporter
         $manifest = $this->readManifest($package_path . '/manifest.json');
         [$css_name, $js_name] = $this->getCssAndJsNames($manifest);
 
+        if (!is_dir($destination_path) && !mkdir($destination_path, 0777, true) && !is_dir($destination_path)) {
+            throw new \RuntimeException(sprintf('Unable to create widget asset directory: %s', $destination_path));
+        }
+
+        if (!copy($package_path . '/manifest.json', $destination_path . '/manifest.json')) {
+            throw new \RuntimeException(sprintf('Unable to copy widget asset manifest: %s', $package_path . '/manifest.json'));
+        }
+
         $this->copyManifestAssets($manifest, $source_assets_path, $destination_path);
         $this->copyAssetDirectory($source_assets_path, $destination_path, 'images', 'image');
         $this->copyAssetDirectory($source_assets_path, $destination_path, 'icon', 'icon');
