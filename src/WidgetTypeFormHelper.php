@@ -9,7 +9,7 @@ use CodeHqDk\MyDashboard\WidgetTester\SaveSettings\SaveSettingsProvider;
 
 class WidgetTypeFormHelper implements WidgetTypeFormHelperInterface
 {
-    public function __construct(private WidgetProvider $widgetProvider)
+    public function __construct(private WidgetProvider $widgetProvider, private readonly ProjectPaths $project_paths)
     {
     }
 
@@ -46,8 +46,13 @@ class WidgetTypeFormHelper implements WidgetTypeFormHelperInterface
     {
         $settings_class = $this->widgetProvider->returnWidgetSettings();
 
-        $content = file_get_contents(dirname(__DIR__) . '/runtime/widget_settings.json');
-        $widget_type_specific_settings = json_decode($content, true);
+        $file = $this->project_paths->getRunTimePath() . '/widget_settings.json';
+        if (file_exists($file)) {
+            $content = file_get_contents($file);
+            $widget_type_specific_settings = json_decode($content, true, 512, JSON_THROW_ON_ERROR) ?? [];
+        } else {
+            $widget_type_specific_settings = [];
+        }
 
         return $settings_class::fromArray($widget_type_specific_settings);
     }

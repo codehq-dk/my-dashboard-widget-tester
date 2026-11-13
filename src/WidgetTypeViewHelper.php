@@ -7,14 +7,22 @@ use CodeHqDk\MyDashboard\Interfaces\WidgetTypeViewHelperInterface;
 
 class WidgetTypeViewHelper implements WidgetTypeViewHelperInterface
 {
+    public function __construct(private readonly ProjectPaths $project_paths)
+    {
+    }
+
     /**
      * @inheritDoc
      */
     public function getSettings(string $widget_type_settings_classname): ?WidgetTypeSettings
     {
-        $content = file_get_contents(dirname(__DIR__) . '/runtime/widget_settings.json');
-
-        $widget_type_specific_settings = json_decode($content, true);
+        $file = $this->project_paths->getRunTimePath() . '/widget_settings.json';
+        if (file_exists($file)) {
+            $content = file_get_contents($file);
+            $widget_type_specific_settings = json_decode($content, true);
+        } else {
+            $widget_type_specific_settings = [];
+        }
 
         return $widget_type_settings_classname::fromArray($widget_type_specific_settings);
     }

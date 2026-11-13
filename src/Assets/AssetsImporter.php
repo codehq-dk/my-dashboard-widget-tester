@@ -3,6 +3,7 @@
 namespace CodeHqDk\MyDashboard\WidgetTester\Assets;
 
 use CodeHqDk\MyDashboard\Interfaces\WidgetProvider;
+use CodeHqDk\MyDashboard\WidgetTester\ProjectPaths;
 use Composer\InstalledVersions;
 
 class AssetsImporter
@@ -12,6 +13,7 @@ class AssetsImporter
 
     public function __construct(
         private WidgetProvider $widget_provider,
+        private ProjectPaths $project_path,
         private bool $local_asset = true
     ) {
     }
@@ -31,7 +33,7 @@ class AssetsImporter
         $this->css_name = null;
         $this->js_name = null;
 
-        $project_root = InstalledVersions::getRootPackage()['install_path'];
+        $project_root = $this->project_path->getProjectPath();//InstalledVersions::getRootPackage()['install_path'];
         if ($this->local_asset) {
             $manifest = $this->readManifest($project_root . '/manifest.json');
             [$this->css_name, $this->js_name] = $this->getCssAndJsNames($manifest);

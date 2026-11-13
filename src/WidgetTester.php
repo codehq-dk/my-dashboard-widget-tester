@@ -20,8 +20,11 @@ use Slince\Di\Container;
 
 class WidgetTester
 {
-    public function __construct(private string $widget_provider_classname, private bool $local_assets = true)
-    {
+    public function __construct(
+        private string $widget_provider_classname,
+        private ProjectPaths $project_path,
+        private bool $local_assets = true
+    ) {
     }
 
     public function start(): void
@@ -65,17 +68,21 @@ class WidgetTester
         });
 
         $container->register(WidgetTypeFormHelper::class, function() use ($widget_provider) {
-            return new WidgetTypeFormHelper($widget_provider);
+            return new WidgetTypeFormHelper($widget_provider, $this->project_path);
         });
 
+        $container->register(ProjectPaths::class, $this->project_path);
         $container->register(WidgetTypeViewHelper::class, null);
         $container->register(WidgetTypeViewHelperInterface::class, WidgetTypeViewHelper::class);
 
         $container->register(WidgetTypeFormHelper::class, null);
         $container->register(WidgetTypeFormHelperInterface::class, WidgetTypeFormHelper::class);
 
-
-        $assets_importer = new AssetsImporter($widget_provider, $this->local_assets);
+        $assets_importer = new AssetsImporter(
+            $widget_provider,
+            $this->project_path,
+            $this->local_assets
+        );
         $assets_importer->import();
         $container->register(AssetsImporter::class, $assets_importer);
 
